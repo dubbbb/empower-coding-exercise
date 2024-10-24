@@ -1,8 +1,20 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
+import { cors } from "hono/cors";
+
 import { accounts, categories, transactions } from "./mockData";
 
 const app = new Hono();
+
+// Use the CORS middleware to allow requests from localhost:5173
+app.use(
+  "*",
+  cors({
+    origin: "http://localhost:5173",
+    allowMethods: ["GET", "POST", "PUT", "DELETE"],
+    allowHeaders: ["Content-Type"],
+  })
+);
 
 app
   .get("/accounts", (c) => {
